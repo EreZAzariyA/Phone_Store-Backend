@@ -21,5 +21,15 @@ router.get("/all-brands", async (req: Request, res: Response, next: NextFunction
       }
 });
 
+router.get("/phones-by-brandId/:brandId", async (req: Request, res: Response, next: NextFunction) => {
+      try {
+            const brandId = req.params.brandId;
+            const phones = await storeLogic.getPhonesByBrandId(brandId);
+            res.json(phones);
+      } catch (err: any) {
+            next(err);
+      }
+});
+
 
 export default router;
