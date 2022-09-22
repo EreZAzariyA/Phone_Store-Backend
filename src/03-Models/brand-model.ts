@@ -1,10 +1,10 @@
 export class BrandModel {
       public brandId: string;
-      public brandName: string;
+      public brand: string;
 
       constructor(brand: BrandModel) {
             this.brandId = brand.brandId;
-            this.brandName = brand.brandName;
+            this.brand = brand.brand;
       }
 }
 

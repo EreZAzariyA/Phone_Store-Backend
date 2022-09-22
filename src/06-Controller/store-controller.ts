@@ -37,17 +37,17 @@ router.post("/all-phones", async (req: Request, res: Response, next: NextFunctio
       try {
             const phoneToAdd = new PhoneModel(req.body);
             const addedPhone = await storeLogic.addNewPhone(phoneToAdd);
-            res.sendStatus(200).json(addedPhone);
+            res.status(200).json(addedPhone);
       } catch (err: any) {
             next(err);
       }
 });
 
-router.post("/all-brands", async (req: Request, res: Response, next: NextFunction) => {
+router.post("/add-brands", async (req: Request, res: Response, next: NextFunction) => {
       try {
-            const brandToAdd = new BrandModel(req.body);
+            const brandToAdd = new BrandModel(await req.body);
             const addedBrand = await storeLogic.addNewBrand(brandToAdd);
-            res.sendStatus(200).json(addedBrand);
+            res.status(200).json(addedBrand);
       } catch (err: any) {
             next(err);
       }
