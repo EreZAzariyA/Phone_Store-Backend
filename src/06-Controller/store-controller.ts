@@ -1,4 +1,6 @@
 import express, { NextFunction, Request, Response } from "express";
+import { BrandModel } from "../03-Models/brand-model";
+import { PhoneModel } from "../03-Models/phone-model";
 import storeLogic from "../05-BLL/store-logic";
 
 const router = express.Router();
@@ -31,5 +33,24 @@ router.get("/phones-by-brandId/:brandId", async (req: Request, res: Response, ne
       }
 });
 
+router.post("/all-phones", async (req: Request, res: Response, next: NextFunction) => {
+      try {
+            const phoneToAdd = new PhoneModel(req.body);
+            const addedPhone = await storeLogic.addNewPhone(phoneToAdd);
+            res.sendStatus(200).json(addedPhone);
+      } catch (err: any) {
+            next(err);
+      }
+});
+
+router.post("/all-brands", async (req: Request, res: Response, next: NextFunction) => {
+      try {
+            const brandToAdd = new BrandModel(req.body);
+            const addedBrand = await storeLogic.addNewBrand(brandToAdd);
+            res.sendStatus(200).json(addedBrand);
+      } catch (err: any) {
+            next(err);
+      }
+});
 
 export default router;
