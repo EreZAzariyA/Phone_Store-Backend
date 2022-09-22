@@ -5,6 +5,9 @@ import { v4 as uuid } from "uuid";
 import UserModel from "../03-Models/user-model";
 import dal from "../04-DAL/dal";
 import Role from "../03-Models/role";
+import cartLogic from "./shopping-cart logic";
+import ShoppingCartModel from "../03-Models/shopping-cart model";
+import shoppingCartLogic from "./shopping-cart logic";
 
 async function register(user: UserModel): Promise<string> {
 
@@ -26,6 +29,8 @@ async function register(user: UserModel): Promise<string> {
                                     '${user.roleId}')`;
       // Execute the commend to create a new user on the server
       await dal.execute(addUserSql);
+
+      await shoppingCartLogic.createNewShoppingCart(user?.userId);
 
       // Set new token
       const token = jwt.getNewToken(user);

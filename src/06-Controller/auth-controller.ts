@@ -11,9 +11,7 @@ router.post("/register", async (req: Request, res: Response, next: NextFunction)
       try {
             const user = new UserModel(req.body);
             const token = await authLogic.register(user);
-            res.status(201).json(token);
-            console.log(token);
-            
+            res.status(201).json(token);            
       } catch (err: any) {
             next(err);
       }
