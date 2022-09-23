@@ -30,7 +30,7 @@ async function register(user: UserModel): Promise<string> {
       // Execute the commend to create a new user on the server
       await dal.execute(addUserSql);
 
-      await shoppingCartLogic.createNewShoppingCart(user?.userId);
+      await shoppingCartLogic.createNewShoppingCartForNewUsers(user?.userId);
 
       // Set new token
       const token = jwt.getNewToken(user);

@@ -3,7 +3,8 @@ import dal from "../04-DAL/dal";
 import { v4 as uuid } from "uuid";
 import ClientError from "../03-Models/client-error";
 
-async function createNewShoppingCart(userId: string): Promise<ShoppingCartModel> {
+// In register only !
+async function createNewShoppingCartForNewUsers(userId: string): Promise<ShoppingCartModel> {
       // Check if user already have shopping cart;
       const cartsSql = "SELECT * FROM shopping_carts";
       const shopping_carts: ShoppingCartModel[] = await dal.execute(cartsSql);
@@ -22,9 +23,18 @@ async function createNewShoppingCart(userId: string): Promise<ShoppingCartModel>
 
             return shoppingCart;
       }
-
 }
 
+// Get user shopping cart by userId:
+async function getUserShoppingCartByUserId(userId: string): Promise<ShoppingCartModel> {
+      const sql = `SELECT * FROM shopping_carts WHERE userId = '${userId}'`;
+      const shoppingCarts = await dal.execute(sql);
+      const shoppingCart = shoppingCarts[0];
+      return shoppingCart;
+}
+
+
 export default {
-      createNewShoppingCart
+      createNewShoppingCartForNewUsers,
+      getUserShoppingCartByUserId
 }
