@@ -1,4 +1,5 @@
 import express, { NextFunction, Request, Response } from "express";
+import ItemInCartModel from "../03-Models/item-in-cart model";
 import ShoppingCartModel from "../03-Models/shopping-cart model";
 import shoppingCartLogic from "../05-BLL/shopping-cart logic";
 
@@ -14,6 +15,28 @@ router.get("/user-cart/:userId", async (req: Request, res: Response, next: NextF
             next(err);
       }
 });
+
+// Get items from shopping cart by shopping-cart-id:
+router.get("/items-in-cart/:shoppingCartId", async (req: Request, res: Response, next: NextFunction) => {
+      try {
+            const shoppingCartId = req.params.shoppingCartId;
+            const itemsInCart = await shoppingCartLogic.getItemsFromCartByShoppingCartId(shoppingCartId);
+            res.json(itemsInCart);
+      } catch (err: any) {
+            next(err);
+      }
+});
+
+// Add item into shopping-cart:
+router.post("/add-item-to-cart", async (req: Request, res: Response, next: NextFunction) => {
+      try {
+            const itemToAdd = new ItemInCartModel(req.body);
+            const addedItem = await shoppingCartLogic.addItemToShoppingCart(itemToAdd);
+            res.status(200).json(addedItem);
+      } catch (err:any) {
+            next(err);
+      }
+})
 
 
 

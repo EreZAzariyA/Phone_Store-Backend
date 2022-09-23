@@ -2,8 +2,9 @@ import ShoppingCartModel from "../03-Models/shopping-cart model";
 import dal from "../04-DAL/dal";
 import { v4 as uuid } from "uuid";
 import ClientError from "../03-Models/client-error";
+import ItemInCartModel from "../03-Models/item-in-cart model";
 
-// In register only !
+// In register / If user don`t have shopping cart
 async function createNewShoppingCartForNewUsers(userId: string): Promise<ShoppingCartModel> {
       // Check if user already have shopping cart;
       const cartsSql = "SELECT * FROM shopping_carts";
@@ -33,8 +34,34 @@ async function getUserShoppingCartByUserId(userId: string): Promise<ShoppingCart
       return shoppingCart;
 }
 
+// Get items from shopping cart by shopping-cart-id:
+async function getItemsFromCartByShoppingCartId(shoppingCartId: string): Promise<ItemInCartModel[]>{
+      // Check if user have cart:
+      const cartCheckSql = `SELECT * FROM shopping_carts WHERE cartId = '${shoppingCartId}'`;
+      const cart = await dal.execute(cartCheckSql);
+      if (!cart) {
+            throw new ClientError(400, "No shopping cart");
+      }
+
+      const sql = `SELECT * FROM items_in_cart WHERE cartId = '${shoppingCartId}'`;
+      const itemsInCart = await dal.execute(sql);
+      return itemsInCart;
+}
+
+// Add item into shopping-cart:
+async function addItemToShoppingCart(itemToAdd:ItemInCartModel): Promise<void>{
+      const sql = `INSERT INTO items_in_cart VALUES (
+                                                '${itemToAdd.cartId}',
+                                                '${itemToAdd.phoneId}',
+                                                '${itemToAdd.stock}',
+                                                '${itemToAdd.totalPrice}')`;
+      await dal.execute(sql);
+}
+
 
 export default {
       createNewShoppingCartForNewUsers,
-      getUserShoppingCartByUserId
+      getUserShoppingCartByUserId,
+      getItemsFromCartByShoppingCartId,
+      addItemToShoppingCart
 }
