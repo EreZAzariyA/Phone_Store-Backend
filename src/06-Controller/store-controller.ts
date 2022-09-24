@@ -14,6 +14,16 @@ router.get("/all-phones", async (req: Request, res: Response, next: NextFunction
       }
 });
 
+router.get("/all-phones/:phoneId", async (req: Request, res: Response, next: NextFunction) => {
+      try {
+            const phoneId = req.params.phoneId;
+            const phoneById = await storeLogic.getOnePhoneByPhoneId(phoneId);
+            res.json(phoneById);
+      } catch (err:any) {
+            next(err);
+      }
+})
+
 router.get("/all-brands", async (req: Request, res: Response, next: NextFunction) => {
       try {
             const brands = await storeLogic.getAllBrands();

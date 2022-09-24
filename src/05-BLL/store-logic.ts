@@ -9,6 +9,13 @@ async function getAllPhones(): Promise<PhoneModel[]> {
       return phones;
 };
 
+async function getOnePhoneByPhoneId(phoneId: string): Promise<PhoneModel>{
+      const sql = `SELECT * FROM phones WHERE phoneId = '${phoneId}'`;
+      const phones = await dal.execute(sql);
+      const phone = phones[0];
+      return phone;
+}
+
 async function getAllBrands(): Promise<BrandModel[]> {
       const sql = "SELECT * FROM brands";
       const brands = await dal.execute(sql);
@@ -48,6 +55,7 @@ async function addNewBrand(brand: BrandModel): Promise<BrandModel> {
 
 export default {
       getAllPhones,
+      getOnePhoneByPhoneId,
       getAllBrands,
       getPhonesByBrandId,
       addNewPhone,
