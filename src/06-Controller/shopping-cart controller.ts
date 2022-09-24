@@ -33,10 +33,33 @@ router.post("/add-item-to-cart", async (req: Request, res: Response, next: NextF
             const itemToAdd = new ItemInCartModel(req.body);
             const addedItem = await shoppingCartLogic.addItemToShoppingCart(itemToAdd);
             res.status(200).json(addedItem);
-      } catch (err:any) {
+      } catch (err: any) {
             next(err);
       }
-})
+});
+
+router.patch("/update-item-in-cart", async (req: Request, res: Response, next: NextFunction) => {
+      try {
+            const itemToUpdate = new ItemInCartModel(req.body);
+            const updatedItem = await shoppingCartLogic.updateStockInCart(itemToUpdate);
+            res.status(200).json(updatedItem);
+      } catch (err: any) {
+            next(err);
+      }
+});
+
+
+router.delete("/delete-from-cart/:phoneIdToRemove/:cartId", async (req: Request, res: Response, next: NextFunction) => {
+      try {
+            const phoneIdToRemove = req.params.phoneIdToRemove;
+            const cartId = req.params.cartId;
+            await shoppingCartLogic.removeItemFromCart(phoneIdToRemove, cartId);
+            res.status(200).send(console.log("Deleted"));
+      } catch (err: any) {
+            next(err);
+      }
+});
+
 
 
 

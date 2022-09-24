@@ -58,10 +58,24 @@ async function addItemToShoppingCart(itemToAdd:ItemInCartModel): Promise<void>{
       await dal.execute(sql);
 }
 
+async function updateStockInCart(phoneInCartToUpdate:ItemInCartModel): Promise<ItemInCartModel>{
+      const sql = `UPDATE items_in_cart SET phoneId = '${phoneInCartToUpdate.phoneId}', cartId = '${phoneInCartToUpdate.cartId}', stock = '${phoneInCartToUpdate.stock}', totalPrice = '${phoneInCartToUpdate.totalPrice}' WHERE phoneId = '${phoneInCartToUpdate.phoneId}' AND cartId = '${phoneInCartToUpdate.cartId}'`;
+      await dal.execute(sql);
+      const updatedItem = new ItemInCartModel(phoneInCartToUpdate);
+      return updatedItem;
+}
+
+
+async function removeItemFromCart(phoneIdToRemove: string, cartId: string): Promise<void>{
+      const sql = `REMOVE FROM items_in_cart WHERE phoneId = '${phoneIdToRemove}' AND cartId = '${cartId}'`;
+      await dal.execute(sql);
+}
 
 export default {
       createNewShoppingCartForNewUsers,
       getUserShoppingCartByUserId,
       getItemsFromCartByShoppingCartId,
-      addItemToShoppingCart
+      addItemToShoppingCart,
+      removeItemFromCart,
+      updateStockInCart
 }
