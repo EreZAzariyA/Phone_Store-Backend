@@ -9,7 +9,7 @@ import shoppingCartController from "./06-Controller/shopping-cart controller";
 
 const server = express();
 server.use(cors());
-const port = +process.env.PORT || 5000;
+const port = +process.env.PORT || 5001;
 
 server.use(express.json());
 server.use("/api", storeController);
