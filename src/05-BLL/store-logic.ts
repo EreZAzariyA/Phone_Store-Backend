@@ -9,7 +9,7 @@ async function getAllPhones(): Promise<PhoneModel[]> {
       return phones;
 };
 
-async function getOnePhoneByPhoneId(phoneId: string): Promise<PhoneModel>{
+async function getOnePhoneByPhoneId(phoneId: string): Promise<PhoneModel> {
       const sql = `SELECT * FROM phones WHERE phoneId = '${phoneId}'`;
       const phones = await dal.execute(sql);
       const phone = phones[0];
@@ -53,11 +53,19 @@ async function addNewBrand(brand: BrandModel): Promise<BrandModel> {
       return brand;
 }
 
+async function getOneBrand(brandId: string): Promise<BrandModel> {
+      const sql = `SELECT * FROM brands WHERE brandId = '${brandId}'`;
+      const brands = await dal.execute(sql);
+      const brand = brands[0];
+      return brand;
+}
+
 export default {
       getAllPhones,
       getOnePhoneByPhoneId,
       getAllBrands,
       getPhonesByBrandId,
       addNewPhone,
-      addNewBrand
+      addNewBrand,
+      getOneBrand
 }

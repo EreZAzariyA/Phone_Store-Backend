@@ -19,7 +19,7 @@ router.get("/all-phones/:phoneId", async (req: Request, res: Response, next: Nex
             const phoneId = req.params.phoneId;
             const phoneById = await storeLogic.getOnePhoneByPhoneId(phoneId);
             res.json(phoneById);
-      } catch (err:any) {
+      } catch (err: any) {
             next(err);
       }
 })
@@ -63,4 +63,13 @@ router.post("/add-brands", async (req: Request, res: Response, next: NextFunctio
       }
 });
 
+router.get("/all-brands/:brandId", async (req: Request, res: Response, next: NextFunction) => {
+      try {
+            const brandId = req.params.brandId;
+            const brand = await storeLogic.getOneBrand(brandId);
+            res.json(brand);
+      } catch (err: any) {
+            next(err);
+      }
+})
 export default router;
