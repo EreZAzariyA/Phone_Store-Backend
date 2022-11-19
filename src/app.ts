@@ -3,7 +3,8 @@ import cors from "cors";
 import errorsHandler from "./02-Middleware/errors-handler";
 import ClientError from "./03-Models/client-error";
 import authController from "./06-Controller/auth-controller";
-import storeController from "./06-Controller/store-controller";
+import phonesController from "./06-Controller/phones-controller";
+import brandsController from "./06-Controller/brands-controller";
 import shoppingCartController from "./06-Controller/shopping-cart controller";
 
 
@@ -12,7 +13,9 @@ server.use(cors());
 const port = +process.env.PORT || 5001;
 
 server.use(express.json());
-server.use("/api", storeController);
+server.use("/api/phones", phonesController);
+server.use("/api/brands", brandsController);
+
 server.use("/api/auth", authController);
 server.use("/api/shopping-carts", shoppingCartController);
 

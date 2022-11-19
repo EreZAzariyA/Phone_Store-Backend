@@ -1,7 +1,7 @@
-import { BrandModel } from "../03-Models/brand-model";
 import { PhoneModel } from "../03-Models/phone-model";
 import dal from "../04-DAL/dal";
 import { v4 as uuid } from "uuid";
+
 
 async function getAllPhones(): Promise<PhoneModel[]> {
       const sql = "SELECT * FROM phones";
@@ -15,12 +15,6 @@ async function getOnePhoneByPhoneId(phoneId: string): Promise<PhoneModel> {
       const phone = phones[0];
       return phone;
 }
-
-async function getAllBrands(): Promise<BrandModel[]> {
-      const sql = "SELECT * FROM brands";
-      const brands = await dal.execute(sql);
-      return brands;
-};
 
 async function getPhonesByBrandId(brandId: string): Promise<PhoneModel[]> {
       const sql = `SELECT * FROM phones WHERE brandId = '${brandId}'`;
@@ -42,30 +36,22 @@ async function addNewPhone(phone: PhoneModel): Promise<PhoneModel> {
       return phone;
 };
 
-async function addNewBrand(brand: BrandModel): Promise<BrandModel> {
-      brand.brandId = uuid();
-      const sql = `INSERT INTO brands VALUES (
-                                          '${brand.brandId}',
-                                          '${brand.brand}')`;
-      await dal.execute(sql);
-      console.log(brand);
-
-      return brand;
+async function updatePhone(phoneToUpdate: PhoneModel): Promise<PhoneModel>{
+      const sql = `UPDATE phones SET brandId = '${phoneToUpdate.brandId}',name ='${phoneToUpdate.name}',description = '${phoneToUpdate.description}',price ='${phoneToUpdate.price}',picture='${phoneToUpdate.picture}'`;
+      const updatedPhone = await dal.execute(sql);
+      return updatedPhone;
 }
 
-async function getOneBrand(brandId: string): Promise<BrandModel> {
-      const sql = `SELECT * FROM brands WHERE brandId = '${brandId}'`;
-      const brands = await dal.execute(sql);
-      const brand = brands[0];
-      return brand;
+async function deletePhone(phoneIdToDelete: string): Promise<void>{
+      const sql = `DELETE FROM phones WHERE phoneId = '${phoneIdToDelete}'`;
+      await dal.execute(sql);
 }
 
 export default {
       getAllPhones,
       getOnePhoneByPhoneId,
-      getAllBrands,
       getPhonesByBrandId,
       addNewPhone,
-      addNewBrand,
-      getOneBrand
+      updatePhone,
+      deletePhone
 }
