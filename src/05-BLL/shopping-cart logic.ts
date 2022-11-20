@@ -67,7 +67,7 @@ async function updateStockInCart(phoneInCartToUpdate:ItemInCartModel): Promise<I
 
 
 async function removeItemFromCart(phoneIdToRemove: string, cartId: string): Promise<void>{
-      const sql = `REMOVE FROM items_in_cart WHERE phoneId = '${phoneIdToRemove}' AND cartId = '${cartId}'`;
+      const sql = `DELETE FROM items_in_cart WHERE phoneId = '${phoneIdToRemove}' AND cartId = '${cartId}'`;
       await dal.execute(sql);
 }
 
