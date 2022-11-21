@@ -1,6 +1,7 @@
 import { PhoneModel } from "../03-Models/phone-model";
 import dal from "../04-DAL/dal";
 import { v4 as uuid } from "uuid";
+import ClientError from "../03-Models/client-error";
 
 
 async function getAllPhones(): Promise<PhoneModel[]> {
@@ -22,27 +23,31 @@ async function getPhonesByBrandId(brandId: string): Promise<PhoneModel[]> {
       return phones;
 }
 
+function isImage(url: string) {
+      return /\.(jpg|jpeg|png|webp|avif|gif|svg)$/.test(url);
+}
+
 async function addNewPhone(phone: PhoneModel): Promise<PhoneModel> {
       phone.phoneId = uuid();
+      if (!isImage(phone.picture)) throw new ClientError(500, "Picture not supported");
       const sql = `INSERT INTO phones VALUES (
                                     '${phone.phoneId}',
                                     '${phone.brandId}',
                                     '${phone.name}',
                                     '${phone.description}',
-                                    '${phone.rating}',
                                     '${phone.price}',
                                     '${phone.picture}')`;
       await dal.execute(sql);
       return phone;
 };
 
-async function updatePhone(phoneToUpdate: PhoneModel): Promise<PhoneModel>{
+async function updatePhone(phoneToUpdate: PhoneModel): Promise<PhoneModel> {
       const sql = `UPDATE phones SET brandId = '${phoneToUpdate.brandId}',name ='${phoneToUpdate.name}',description = '${phoneToUpdate.description}',price ='${phoneToUpdate.price}',picture='${phoneToUpdate.picture}'`;
       const updatedPhone = await dal.execute(sql);
       return updatedPhone;
 }
 
-async function deletePhone(phoneIdToDelete: string): Promise<void>{
+async function deletePhone(phoneIdToDelete: string): Promise<void> {
       const sql = `DELETE FROM phones WHERE phoneId = '${phoneIdToDelete}'`;
       await dal.execute(sql);
 }
