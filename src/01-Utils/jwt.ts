@@ -3,7 +3,7 @@ import jwt, { JwtPayload, VerifyErrors } from "jsonwebtoken";
 import UserModel from "../03-Models/user-model";
 import config from "./config";
 
-const secretKey = "I-Love-Kittens-And-Puppies";
+const secretKey = "I-Love-Neat-Code";
 
 function getNewToken(user: UserModel): string {
     const payload = { user }; // payload = object containing our user.

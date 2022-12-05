@@ -1,6 +1,5 @@
 import express, { NextFunction, Request, Response } from "express";
 import ItemInCartModel from "../03-Models/item-in-cart model";
-import ShoppingCartModel from "../03-Models/shopping-cart model";
 import shoppingCartLogic from "../05-BLL/shopping-cart logic";
 
 const router = express.Router();
