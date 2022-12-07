@@ -1,4 +1,5 @@
 import express, { NextFunction, Request, Response } from "express";
+import verifyAdmin from "../02-Middleware/verify-admin";
 import { PhoneModel } from "../03-Models/phone-model";
 import phonesLogic from "../05-BLL/phones-logic";
 
@@ -39,7 +40,7 @@ router.get("/phones-by-brandId/:brandId", async (req: Request, res: Response, ne
 });
 
 // Add New Phone:
-router.post("/", async (req: Request, res: Response, next: NextFunction) => {
+router.post("/", verifyAdmin, async (req: Request, res: Response, next: NextFunction) => {
       try {
             const phoneToAdd = new PhoneModel(req.body);
             const addedPhone = await phonesLogic.addNewPhone(phoneToAdd);

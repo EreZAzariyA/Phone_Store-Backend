@@ -1,4 +1,5 @@
 import express, { NextFunction, Request, Response } from "express";
+import verifyAdmin from "../02-Middleware/verify-admin";
 import { BrandModel } from "../03-Models/brand-model";
 import { PhoneModel } from "../03-Models/phone-model";
 import brandsLogic from "../05-BLL/brands-logic";
@@ -28,7 +29,7 @@ router.get("/:brandId", async (req: Request, res: Response, next: NextFunction) 
 });
 
 // Add New Brand:
-router.post("/", async (req: Request, res: Response, next: NextFunction) => {
+router.post("/", verifyAdmin, async (req: Request, res: Response, next: NextFunction) => {
       try {
             const brandToAdd = new BrandModel(await req.body);
             const addedBrand = await brandsLogic.addNewBrand(brandToAdd);
@@ -39,7 +40,7 @@ router.post("/", async (req: Request, res: Response, next: NextFunction) => {
 });
 
 // Update Brand:
-router.put('/', async (req: Request, res: Response, next: NextFunction) => {
+router.put('/',verifyAdmin, async (req: Request, res: Response, next: NextFunction) => {
       try {
             const brandToUpdate = new BrandModel(req.body);
             const updatedBrand = await brandsLogic.updateBrand(brandToUpdate);
@@ -50,7 +51,7 @@ router.put('/', async (req: Request, res: Response, next: NextFunction) => {
 });
 
 // Delete Brand By Id:
-router.delete('/:brandId', async (req: Request, res: Response, next: NextFunction) => {
+router.delete('/:brandId',verifyAdmin, async (req: Request, res: Response, next: NextFunction) => {
       try {
             const brandIdToDelete = req.params.brandId;
             await brandsLogic.deleteBrand(brandIdToDelete);
