@@ -16,7 +16,7 @@ router.post('/', async (req: Request, res: Response, next: NextFunction) => {
 
 router.get('/users-orders/:userEmail', async (req: Request, res: Response, next: NextFunction) => {
       try {
-            const userEmail = req.params.userEmail;
+            const userEmail = req.params.userEmail;            
             const userOrders = await ordersLogic.getUserOrders(userEmail);
             res.json(userOrders);
       } catch (err: any) {
