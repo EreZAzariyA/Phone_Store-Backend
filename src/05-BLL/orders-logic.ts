@@ -1,3 +1,4 @@
+import moment from "moment";
 import { v4 as uuid } from "uuid";
 import ClientError from "../03-Models/client-error";
 import OrderModel from "../03-Models/order-model";
@@ -7,10 +8,9 @@ import dal from "../04-DAL/dal";
 
 async function setNewOrder(order: OrderModel): Promise<OrderModel> {
       order.orderId = uuid();
-      order.orderDate = new Date();
-      order.receivingDeliveryDate = new Date();
-      order.receivingDeliveryDate?.setDate(order.orderDate.getDate() + 5);
-      order.receivingDeliveryDate.setHours(6, 0);
+      const today = new Date();
+      order.orderDate = moment(today).format("YYYY-MM-DD") as any;
+      order.receivingDeliveryDate = moment().add(5, 'days').format("YYYY-MM-DD") as any;
 
       const sql = `INSERT INTO orders VALUES(
                                           '${order.orderId}',
@@ -22,8 +22,8 @@ async function setNewOrder(order: OrderModel): Promise<OrderModel> {
                                           '${order.paymentMethod.creditCard.cardNumber}',
                                           '${order.paymentMethod.creditCard.expiredDate}',
                                           '${order.paymentMethod.creditCard.securityNumber}',
-                                          '${order.orderDate.toLocaleDateString()}',
-                                          '${order.receivingDeliveryDate.toLocaleDateString()}')`
+                                          '${order.orderDate}',
+                                          '${order.receivingDeliveryDate}')`
       await dal.execute(sql);
       return order;
 }
