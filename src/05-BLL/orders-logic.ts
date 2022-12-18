@@ -12,6 +12,7 @@ async function setNewOrder(order: OrderModel): Promise<OrderModel> {
       order.orderDate = moment(today).format("YYYY-MM-DD") as any;
       order.receivingDeliveryDate = moment().add(5, 'days').format("YYYY-MM-DD") as any;
 
+      
       const sql = `INSERT INTO orders VALUES(
                                           '${order.orderId}',
                                           '${order.email}',
